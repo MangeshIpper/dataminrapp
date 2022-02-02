@@ -22,7 +22,7 @@ export const Menu = () => {
       address: "Dublin",
       age: "26",
       profession: "Software Engineer",
-      interestRate: "4"
+      interestRate: "4",
     },
     {
       id: 2,
@@ -30,7 +30,7 @@ export const Menu = () => {
       address: "Galaway",
       age: "24",
       profession: "Software Engineer",
-      interestRate: "5"
+      interestRate: "5",
     },
   ];
 
@@ -40,7 +40,7 @@ export const Menu = () => {
     address: "",
     age: "",
     profession: "",
-    interestRate: ""
+    interestRate: "",
   };
 
   const [users, setUsers] = useState(defaultUsers);
@@ -48,10 +48,16 @@ export const Menu = () => {
   const [newUser, setNewUser] = useState(initCurrentUser);
   const [showCreateBtn, setShowCreateBtn] = useState(true);
   const [editing, setEdit] = useState(false);
-  const [rates, setRates] = useState([1,2,3,4,5,6,7,8,9,10]);
+  const [rates, setRates] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleClose = () => {
+    setShow(false);
+    setEdit(false);
+    setNewUser(initCurrentUser);
+  };
+  const handleShow = () => {
+    setShow(true);
+  };
 
   const handleShowCreateBtn = () => {
     setShowCreateBtn(!showCreateBtn);
@@ -227,14 +233,20 @@ export const Menu = () => {
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Sport Interest Rate</Form.Label>
-                  <Form.Select value={newUser.interestRate} onChange={(e) =>
+                  <Form.Select
+                    value={newUser.interestRate}
+                    onChange={(e) =>
                       setNewUser({ ...newUser, interestRate: e.target.value })
-                    }><option value="">Select</option>
-                      {
-                        rates.length ? rates.map((val, index) => (
-                            <option key={index} value={val}>{val}</option>
-                        )) : null
-                      }
+                    }
+                  >
+                    <option value="">Select</option>
+                    {rates.length
+                      ? rates.map((val, index) => (
+                          <option key={index} value={val}>
+                            {val}
+                          </option>
+                        ))
+                      : null}
                   </Form.Select>
                 </Form.Group>
               </Modal.Body>
