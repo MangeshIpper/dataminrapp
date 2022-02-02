@@ -42,12 +42,17 @@ export const Menu = () => {
 
   const [users, setUsers] = useState(defaultUsers);
   const [show, setShow] = useState(false);
-  const [createBtn, setCreateBtn] = useState(true);
   const [newUser, setNewUser] = useState(initCurrentUser);
+  const [showCreateBtn, setShowCreateBtn] = useState(true);
+  const [editing, setEdit] = useState(false);
+
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [editing, setEdit] = useState(false);
+  
+  const handleShowCreateBtn = () => {
+    setShowCreateBtn(!showCreateBtn);
+  }
 
   const onFormSubmit = (newUser: BaseUser) => {
     const id = users.length + 1;
@@ -89,14 +94,11 @@ export const Menu = () => {
                   <Card.Title>User Data</Card.Title>
                 </div>
                 <div className="d-flex">
-                  <Toggle className="userToggleBtn" defaultChecked />
-                  <Button
-                    variant="primary"
-                    onClick={handleShow}
-                    title="Add User"
-                  >
-                    <FaPlus />
-                  </Button>
+                  <Toggle className="userToggleBtn" checked={showCreateBtn} onClick={(e: any) => {e.preventDefault(); setShowCreateBtn(!showCreateBtn)}}/>
+                  {
+                    showCreateBtn ?  <Button variant="primary" onClick={handleShow} title="Add User"><FaPlus /></Button>
+                    : ''
+                  }
                 </div>
               </div>
               <Table striped bordered hover variant="dark">
