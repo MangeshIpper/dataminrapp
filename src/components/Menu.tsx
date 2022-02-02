@@ -15,13 +15,14 @@ import { FaPencilAlt, FaPlus, FaTrashAlt } from "react-icons/fa";
 import { BaseUser, User } from "./Interface";
 
 export const Menu = () => {
-  const defaultUsers = [
+  const defaultUsers: Array<User> = [
     {
       id: 1,
       name: "Bob",
       address: "Dublin",
       age: "26",
       profession: "Software Engineer",
+      interestRate: "4"
     },
     {
       id: 2,
@@ -29,6 +30,7 @@ export const Menu = () => {
       address: "Galaway",
       age: "24",
       profession: "Software Engineer",
+      interestRate: "5"
     },
   ];
 
@@ -38,6 +40,7 @@ export const Menu = () => {
     address: "",
     age: "",
     profession: "",
+    interestRate: ""
   };
 
   const [users, setUsers] = useState(defaultUsers);
@@ -45,14 +48,14 @@ export const Menu = () => {
   const [newUser, setNewUser] = useState(initCurrentUser);
   const [showCreateBtn, setShowCreateBtn] = useState(true);
   const [editing, setEdit] = useState(false);
-
+  const [rates, setRates] = useState([1,2,3,4,5,6,7,8,9,10]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  
+
   const handleShowCreateBtn = () => {
     setShowCreateBtn(!showCreateBtn);
-  }
+  };
 
   const onFormSubmit = (newUser: BaseUser) => {
     const id = users.length + 1;
@@ -65,7 +68,7 @@ export const Menu = () => {
     handleShow();
   };
 
-  const onSubmit = (newUser: any) => {
+  const onSubmit = (newUser: BaseUser) => {
     if (editing === true) {
       onUpdateUser(newUser);
     } else {
@@ -94,11 +97,25 @@ export const Menu = () => {
                   <Card.Title>User Data</Card.Title>
                 </div>
                 <div className="d-flex">
-                  <Toggle className="userToggleBtn" checked={showCreateBtn} onClick={(e: any) => {e.preventDefault(); setShowCreateBtn(!showCreateBtn)}}/>
-                  {
-                    showCreateBtn ?  <Button variant="primary" onClick={handleShow} title="Add User"><FaPlus /></Button>
-                    : ''
-                  }
+                  <Toggle
+                    className="userToggleBtn"
+                    checked={showCreateBtn}
+                    onClick={(e: any) => {
+                      e.preventDefault();
+                      setShowCreateBtn(!showCreateBtn);
+                    }}
+                  />
+                  {showCreateBtn ? (
+                    <Button
+                      variant="primary"
+                      onClick={handleShow}
+                      title="Add User"
+                    >
+                      <FaPlus />
+                    </Button>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </div>
               <Table striped bordered hover variant="dark">
@@ -109,6 +126,7 @@ export const Menu = () => {
                     <th>Address</th>
                     <th>Age</th>
                     <th>Profession</th>
+                    <th>Sport Interest Rate</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -121,6 +139,7 @@ export const Menu = () => {
                         <td>{user.address}</td>
                         <td>{user.age}</td>
                         <td>{user.profession}</td>
+                        <td>{user.interestRate}</td>
                         <td>
                           <Button
                             variant="info"
@@ -205,6 +224,18 @@ export const Menu = () => {
                     }
                     placeholder="Enter Profession"
                   />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Sport Interest Rate</Form.Label>
+                  <Form.Select value={newUser.interestRate} onChange={(e) =>
+                      setNewUser({ ...newUser, interestRate: e.target.value })
+                    }><option value="">Select</option>
+                      {
+                        rates.length ? rates.map((val, index) => (
+                            <option key={index} value={val}>{val}</option>
+                        )) : null
+                      }
+                  </Form.Select>
                 </Form.Group>
               </Modal.Body>
               <Modal.Footer>
