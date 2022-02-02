@@ -55,6 +55,9 @@ export const Menu = () => {
   };
   const handleShow = () => {
     setShow(true);
+    if(editing == false) {
+      setNewUser(initCurrentUser);
+    }
   };
 
   const onFormSubmit = (newUser: any) => {
@@ -64,8 +67,11 @@ export const Menu = () => {
 
   const onEdit = (newUser: any) => {
     setEdit(true);
-    setNewUser({ ...newUser, newUser });
-    handleShow();
+    if(editing == true) {
+      setNewUser({ ...newUser, newUser });
+      handleShow();
+    }
+    
   };
 
   const onSubmit = (newUser: any) => {
