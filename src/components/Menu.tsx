@@ -12,6 +12,7 @@ import {
 import { Toggle } from "rsuite";
 import "../App.css";
 import { FaPencilAlt, FaPlus, FaTrashAlt } from "react-icons/fa";
+import { BaseUser, User } from "./Interface";
 
 export const Menu = () => {
   const defaultUsers = [
@@ -19,14 +20,14 @@ export const Menu = () => {
       id: 1,
       name: "Bob",
       address: "Dublin",
-      age: 26,
+      age: "26",
       profession: "Software Engineer",
     },
     {
       id: 2,
       name: "John",
       address: "Galaway",
-      age: 24,
+      age: "24",
       profession: "Software Engineer",
     },
   ];
@@ -35,15 +36,47 @@ export const Menu = () => {
     id: null,
     name: "",
     address: "",
-    age: 10,
+    age: "",
     profession: "",
   };
 
   const [users, setUsers] = useState(defaultUsers);
   const [show, setShow] = useState(false);
+  const [createBtn, setCreateBtn] = useState(true);
+  const [newUser, setNewUser] = useState(initCurrentUser);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [editing, setEdit] = useState(false);
+
+  const onFormSubmit = (newUser: BaseUser) => {
+    const id = users.length + 1;
+    setUsers([...users, { ...newUser, id }]);
+  };
+
+  const onEdit = (newUser: any) => {
+    setEdit(true);
+    setNewUser({ ...newUser, newUser });
+    handleShow();
+  };
+
+  const onSubmit = (newUser: any) => {
+    if (editing === true) {
+      onUpdateUser(newUser);
+    } else {
+      onFormSubmit(newUser);
+    }
+  };
+
+  const onUpdateUser = (newUser: any) => {
+    setEdit(false);
+    let id = newUser.id;
+    setUsers(users.map((i) => (i.id === id ? newUser : i)));
+  };
+
+  const onDeleteUser = (currentUser: User) => {
+    setUsers(users.filter((i) => i.id !== currentUser.id));
+  };
 
   return (
     <Container fluid="md">
@@ -78,67 +111,116 @@ export const Menu = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Mark</td>
-                    <td>Dublin</td>
-                    <td>26</td>
-                    <td>SE</td>
-                    <td>
-                      <Button variant="info" title="Edit user details">
-                        <FaPencilAlt />
-                      </Button>{" "}
-                      <Button variant="danger" title="Delete user">
-                        <FaTrashAlt />
-                      </Button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Jacob</td>
-                    <td>Dublin</td>
-                    <td>26</td>
-                    <td>SE</td>
-                    <td>Delete</td>
-                  </tr>
+                  {users.length > 0 ? (
+                    users.map((user, index) => (
+                      <tr key={index}>
+                        <td>{user.id}</td>
+                        <td>{user.name}</td>
+                        <td>{user.address}</td>
+                        <td>{user.age}</td>
+                        <td>{user.profession}</td>
+                        <td>
+                          <Button
+                            variant="info"
+                            title="Edit user details"
+                            onClick={() => onEdit(user)}
+                          >
+                            <FaPencilAlt />
+                          </Button>{" "}
+                          <Button
+                            variant="danger"
+                            title="Delete user"
+                            onClick={() => onDeleteUser(user)}
+                          >
+                            <FaTrashAlt />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={6} className="text-center">
+                        No users found.
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </Table>
             </Card.Body>
           </Card>
 
           <Modal size="lg" show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Add User</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form >
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>Email address</Form.Label>
-                  <Form.Control type="email" placeholder="Enter email" />
-                  <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
-                  </Form.Text>
+            <Form
+              onSubmit={(e) => {
+                e.preventDefault();
+                onSubmit(newUser);
+              }}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Add User</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form.Group className="mb-3" controlId="formBasicName">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={newUser.name}
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, name: e.target.value })
+                    }
+                    placeholder="Enter Name"
+                  />
                 </Form.Group>
-
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control type="password" placeholder="Password" />
+                <Form.Group className="mb-3" controlId="formBasicAddress">
+                  <Form.Label>Address</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={newUser.address}
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, address: e.target.value })
+                    }
+                    placeholder="Enter Address"
+                  />
                 </Form.Group>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <Button variant="primary" type="submit" onClick={handleClose}>
-                Save Changes
-              </Button>
-            </Modal.Footer>
+                <Form.Group className="mb-3" controlId="formBasicAge">
+                  <Form.Label>Age</Form.Label>
+                  <Form.Control
+                    type="number"
+                    value={newUser.age}
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, age: e.target.value })
+                    }
+                    placeholder="Enter Age"
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicProfession">
+                  <Form.Label>Profession</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={newUser.profession}
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, profession: e.target.value })
+                    }
+                    placeholder="Enter Profession"
+                  />
+                </Form.Group>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                  Close
+                </Button>
+                {editing === true ? (
+                  <Button variant="primary" type="submit" onClick={handleClose}>
+                    Update
+                  </Button>
+                ) : (
+                  <Button variant="primary" type="submit" onClick={handleClose}>
+                    Submit
+                  </Button>
+                )}
+              </Modal.Footer>
+            </Form>
           </Modal>
-
-
-
-
         </Col>
       </Row>
     </Container>
