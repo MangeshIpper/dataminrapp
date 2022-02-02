@@ -48,7 +48,13 @@ Initially created basic form which contain inputs, selectbox, number, dropdown f
 
 I have applied required field on the name input and same time applyed on the submit button to disable if value is null in the field.
 
-![User%20Screen.PNG](attachment:User%20Screen.PNG)
+![User Screen](https://user-images.githubusercontent.com/25785047/152194267-18bae5ad-d449-45a6-a5ee-3f6564bc85ed.PNG)
+
+
+![add user](https://user-images.githubusercontent.com/25785047/152194426-c9d0aea9-cd04-42f1-921c-bb67946758ee.PNG)
+
+
+![edit user](https://user-images.githubusercontent.com/25785047/152194501-fc64e12b-dff7-4abf-ae89-152eb9a19984.PNG)
 
 
 
