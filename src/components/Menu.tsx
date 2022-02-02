@@ -184,7 +184,11 @@ export const Menu = () => {
               }}
             >
               <Modal.Header closeButton>
-                <Modal.Title>Add User</Modal.Title>
+                {
+                  editing == true 
+                  ? <Modal.Title>Edit User</Modal.Title>
+                  : <Modal.Title>Add User</Modal.Title>
+                }
               </Modal.Header>
               <Modal.Body>
                 <Form.Group className="mb-3" controlId="formBasicName">
