@@ -4,6 +4,7 @@ import {
   Card,
   Col,
   Container,
+  Form,
   Modal,
   Row,
   Table,
@@ -84,10 +85,10 @@ export const Menu = () => {
                     <td>26</td>
                     <td>SE</td>
                     <td>
-                      <Button variant="info">
+                      <Button variant="info" title="Edit user details">
                         <FaPencilAlt />
                       </Button>{" "}
-                      <Button variant="danger">
+                      <Button variant="danger" title="Delete user">
                         <FaTrashAlt />
                       </Button>
                     </td>
@@ -105,24 +106,39 @@ export const Menu = () => {
             </Card.Body>
           </Card>
 
-          <Modal show={show} onHide={handleClose}>
+          <Modal size="lg" show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
+              <Modal.Title>Add User</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              Woohoo, you're reading this text in a modal!
+              <Form >
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Email address</Form.Label>
+                  <Form.Control type="email" placeholder="Enter email" />
+                  <Form.Text className="text-muted">
+                    We'll never share your email with anyone else.
+                  </Form.Text>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control type="password" placeholder="Password" />
+                </Form.Group>
+              </Form>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
                 Close
               </Button>
-              <Button variant="primary" onClick={handleClose}>
+              <Button variant="primary" type="submit" onClick={handleClose}>
                 Save Changes
               </Button>
             </Modal.Footer>
           </Modal>
 
-          
+
+
+
         </Col>
       </Row>
     </Container>
