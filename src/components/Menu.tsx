@@ -15,7 +15,7 @@ import { FaPencilAlt, FaPlus, FaTrashAlt } from "react-icons/fa";
 import { BaseUser, User } from "./Interface";
 
 export const Menu = () => {
-  const defaultUsers: Array<User> = [
+  const defaultUsers   = [
     {
       id: 1,
       name: "Bob",
@@ -51,19 +51,13 @@ export const Menu = () => {
   const [rates, setRates] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
   const handleClose = () => {
-    setShow(false);
-    setEdit(false);
-    setNewUser(initCurrentUser);
+    setShow(false);   
   };
   const handleShow = () => {
     setShow(true);
   };
 
-  const handleShowCreateBtn = () => {
-    setShowCreateBtn(!showCreateBtn);
-  };
-
-  const onFormSubmit = (newUser: BaseUser) => {
+  const onFormSubmit = (newUser: any) => {
     const id = users.length + 1;
     setUsers([...users, { ...newUser, id }]);
   };
@@ -74,7 +68,7 @@ export const Menu = () => {
     handleShow();
   };
 
-  const onSubmit = (newUser: BaseUser) => {
+  const onSubmit = (newUser: any) => {
     if (editing === true) {
       onUpdateUser(newUser);
     } else {
@@ -82,7 +76,7 @@ export const Menu = () => {
     }
   };
 
-  const onUpdateUser = (newUser: any) => {
+  const onUpdateUser = (newUser: User) => {
     setEdit(false);
     let id = newUser.id;
     setUsers(users.map((i) => (i.id === id ? newUser : i)));
@@ -192,6 +186,7 @@ export const Menu = () => {
                   <Form.Control
                     type="text"
                     value={newUser.name}
+                    required
                     onChange={(e) =>
                       setNewUser({ ...newUser, name: e.target.value })
                     }
@@ -259,7 +254,7 @@ export const Menu = () => {
                     Update
                   </Button>
                 ) : (
-                  <Button variant="primary" type="submit" onClick={handleClose}>
+                  <Button variant="primary" disabled={!newUser.name} type="submit" onClick={handleClose}>
                     Submit
                   </Button>
                 )}
